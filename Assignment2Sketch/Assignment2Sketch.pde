@@ -25,24 +25,53 @@ void setup(){
   
   for(int i = 0; i < num_of_sections; i++){
     float section_angle = i*2*PI/num_of_sections;
-    // --- Blue wedge for deaths by Zymotic diseases ---
     int disease = table.getRow(i).getInt("Zymotic diseases");
-    print(disease + "\n");
-    fill(0, 0, 128);
-    // Arc angles in radians. Using sqrt so that low values are displayed.
-    arc(500, 500, 20*sqrt(disease), 20*sqrt(disease), section_angle, section_angle + 2*PI/num_of_sections);
-    
-    // --- Black -> other deaths ---
-    int others = table.getRow(i).getInt("All other causes");
-    print(others + "\n");
-    fill(0, 0, 0);
-    arc(500, 500, 20*sqrt(others), 20*sqrt(others), section_angle, section_angle + 2*PI/num_of_sections);
- 
-    // --- Red -> wound deaths ---
     int wound = table.getRow(i).getInt("Wounds & injuries");
-    print(wound + "\n");
-    fill(128, 0, 0);
-    arc(500, 500, 20*sqrt(wound), 20*sqrt(wound), section_angle, section_angle + 2*PI/num_of_sections);
+    int others = table.getRow(i).getInt("All other causes");
+    
+    if(disease >= wound && disease >= others){
+      // Disease largest, draw first
+      drawDisease(disease, section_angle, num_of_sections);
+      if(wound >= others){
+        // Draw wound second
+        drawWound(wound, section_angle, num_of_sections);
+        drawOthers(others, section_angle, num_of_sections);
+      }
+      else{
+        // draw others second
+        drawOthers(others, section_angle, num_of_sections);
+        drawWound(wound, section_angle, num_of_sections);
+      }
+    }
+    
+    else if (others >= wound && others >= disease){
+      drawOthers(others, section_angle, num_of_sections);
+      if(wound >= disease){
+        drawWound(wound, section_angle, num_of_sections);
+        drawDisease(disease, section_angle, num_of_sections);
+      }
+      else{
+        drawDisease(disease, section_angle, num_of_sections);
+        drawWound(wound, section_angle, num_of_sections);
+      }
+    }
+    
+    else{
+      drawWound(wound, section_angle, num_of_sections);
+      if(others >= disease){
+        drawOthers(others, section_angle, num_of_sections);
+        drawDisease(disease, section_angle, num_of_sections);
+      }
+      else{
+        drawDisease(disease, section_angle, num_of_sections);
+        drawOthers(others, section_angle, num_of_sections);
+      }  
+    }
+    
+    
+    
+ 
+
     
     // Label text on screen for months
     // Note: Text is positioned by the centre of its left border
@@ -58,6 +87,21 @@ void setup(){
   
 }
 
-float log100(int x){
-  return (log(x) / log(100));
+void drawDisease(int disease, float section_angle, int num_of_sections){
+  // --- Blue wedge for deaths by Zymotic diseases ---
+  fill(0, 0, 128);
+  // Arc angles in radians. Using sqrt so that low values are displayed.
+  arc(500, 500, 20*sqrt(disease), 20*sqrt(disease), section_angle, section_angle + 2*PI/num_of_sections);
+}
+
+void drawWound(int wound, float section_angle, int num_of_sections){
+  // --- Red -> wound deaths ---
+  fill(128, 0, 0);
+  arc(500, 500, 20*sqrt(wound), 20*sqrt(wound), section_angle, section_angle + 2*PI/num_of_sections);
+}
+
+void drawOthers(int others, float section_angle, int num_of_sections){
+  // --- Black -> other deaths ---
+  fill(0, 0, 0);
+  arc(500, 500, 20*sqrt(others), 20*sqrt(others), section_angle, section_angle + 2*PI/num_of_sections);
 }
