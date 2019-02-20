@@ -147,14 +147,14 @@ void drawWound(int wound, float section_angle, int num_of_sections){
   // --- Red -> wound deaths ---
   fill(128, 0, 0);
   stroke(255, 125, 125);  // Line color
-  strokeWeight(2);  // Line thickness
+  strokeWeight(1);  // Line thickness
   arc(500, 500, 20*sqrt(wound), 20*sqrt(wound), section_angle, section_angle + 2*PI/num_of_sections);
 }
 
 void drawOthers(int others, float section_angle, int num_of_sections){
   // --- Black -> other deaths ---
-  stroke(125, 125, 125);  // Line color
-  strokeWeight(1);  // Line thickness
+  stroke(125, 125, 0);  // Line color
+  strokeWeight(2);  // Line thickness
   fill(0, 0, 0);
   arc(500, 500, 20*sqrt(others), 20*sqrt(others), section_angle, section_angle + 2*PI/num_of_sections);
 }
