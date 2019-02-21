@@ -2,11 +2,11 @@
 Table table;
 
 float getOffsetLon(float input){
-  return ((input - 24)*100 + 100);
+  return ((input - 24) * 100 + 100);
 }
 
 float getOffsetLat(float input){
-  return -((input - 53.9)*100) + 400;
+  return -((input - 53.9) * 200) + 400;  // Negative since reflection about the x-axis
 }
 
 void setup(){
@@ -24,7 +24,7 @@ void setup(){
   textFont(f, 12);  // Arg 2 is font size
   textAlign(CENTER, CENTER);
 
-  strokeCap(SQUARE);
+  strokeCap(ROUND);
 
   // TODO: Consider multiple loop runs for drawing each part (Text, lines, etc) in the correct layer
   
@@ -43,24 +43,25 @@ void setup(){
         stroke(36, 32, 33);
         fill(36, 32, 33);
       }
-      strokeWeight(table.getRow(i).getFloat("SURV")/10000);
+      strokeWeight(table.getRow(i).getFloat("SURV")/5000);
       // To prevent gaps between lines. NOTE: NEED TO CHANGE LINE WIDTH BACK TO NORMAL FOR DRAWING ELLIPSE
       //ellipse(getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")), table.getRow(i).getFloat("SURV")/40000, table.getRow(i).getFloat("SURV")/40000);
       
       // Off by one for line colour
       line(getOffsetLon(table.getRow(i-1).getFloat("LONP")), getOffsetLat(table.getRow(i-1).getFloat("LATP")), getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")));
       // Ellipse to hide gaps between line segments
-      strokeWeight(1);
-      ellipse(getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")), table.getRow(i).getFloat("SURV")/10000, table.getRow(i).getFloat("SURV")/10000);
-    
-      fill(0);
-      text(table.getRow(i).getString("SURV"), getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")) + 10);
+      // strokeWeight(1);
+      //ellipse(getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")), table.getRow(i).getFloat("SURV")/5000, table.getRow(i).getFloat("SURV")/5000);
     }
   }
   
+  // Draw troop numbers and city text
+  fill(0);
+  for(int i = 0; i < troop_rows; i++){
+    text(table.getRow(i).getString("SURV"), getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")) + 10); 
+  }
   for(int i = 0; i < city_rows; i++){
     // ellipse(getOffsetLon(table.getRow(i).getFloat("LONC")), getOffsetLat(table.getRow(i).getFloat("LATC")), 10, 10);
-    fill(0);
     text(table.getRow(i).getString("CITY"), getOffsetLon(table.getRow(i).getFloat("LONC")), getOffsetLat(table.getRow(i).getFloat("LATC")));  
   }
   
@@ -86,8 +87,10 @@ void setup(){
   strokeWeight(3);
   
   for(int i = 0; i < temp_rows; i++){
+    // Text for temp and date
     text(table.getRow(i).getInt("TEMP") + "°C on " +  table.getRow(i).getString("MON") + " " + 
       table.getRow(i).getInt("DAY"), getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 527);
+    // Line for graph
     if(i != 0){
       line(getOffsetLon(table.getRow(i - 1).getFloat("LONT")),-(table.getRow(i - 1).getFloat("TEMP") * 5) + 500, getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500);
     }
