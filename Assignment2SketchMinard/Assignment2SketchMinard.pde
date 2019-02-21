@@ -26,6 +26,9 @@ void setup(){
 
   strokeCap(SQUARE);
 
+  // TODO: Consider multiple loop runs for drawing each part (Text, lines, etc) in the correct layer
+  
+  // May need to reverse loop (to draw orange over black lines)
   for(int i = 0; i < troop_rows; i++){
     if(i != 0){
       if(table.getRow(i-1).getString("DIR").equals("A")){
@@ -44,9 +47,12 @@ void setup(){
       
       // Off by one for line colour
       line(getOffsetLon(table.getRow(i-1).getFloat("LONP")), getOffsetLat(table.getRow(i-1).getFloat("LATP")), getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")));
-      
+      // Ellipse to hide gaps between line segments
       strokeWeight(1);
       ellipse(getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")), table.getRow(i).getFloat("SURV")/10000, table.getRow(i).getFloat("SURV")/10000);
+    
+      fill(0);
+      text(table.getRow(i).getString("SURV"), getOffsetLon(table.getRow(i).getFloat("LONP")), getOffsetLat(table.getRow(i).getFloat("LATP")) + 10);
     }
   }
   
@@ -64,4 +70,7 @@ void setup(){
       line(getOffsetLon(table.getRow(i - 1).getFloat("LONT")),-(table.getRow(i - 1).getFloat("TEMP") * 5) + 500, getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500);
     }
   }
+  
+  // Say in writeup: Using programatic approach instead of hardcoded lines.
+  
 }
