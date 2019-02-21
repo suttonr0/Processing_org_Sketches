@@ -28,6 +28,8 @@ void setup(){
 
   // TODO: Consider multiple loop runs for drawing each part (Text, lines, etc) in the correct layer
   
+  // TODO: Use vertex and stroke join instead of individual lines
+
   // May need to reverse loop (to draw orange over black lines)
   for(int i = 0; i < troop_rows; i++){
     if(i != 0){
@@ -62,10 +64,24 @@ void setup(){
     text(table.getRow(i).getString("CITY"), getOffsetLon(table.getRow(i).getFloat("LONC")), getOffsetLat(table.getRow(i).getFloat("LATC")));  
   }
   
-  stroke(255,0,0);
-  fill(255,0,0);
+  // Temperature Diagram
+  stroke(0);
+  fill(0);
+  
+  // --- Temperature grid lines ---
+  // Horizontals
+  for(int i = 0; i < 4; i++){
+  line(getOffsetLon(table.getRow(0).getFloat("LONT")), 500 + (i * 50), getOffsetLon(table.getRow(8).getFloat("LONT")),500 + (i * 50));
+  }
+  // Verticals
+  line(getOffsetLon(table.getRow(0).getFloat("LONT")), 500, getOffsetLon(table.getRow(0).getFloat("LONT")),650);
+  line(getOffsetLon(table.getRow(8).getFloat("LONT")), 500, getOffsetLon(table.getRow(8).getFloat("LONT")),650);
+  // Temp Indicators
+
+  
   for(int i = 0; i < temp_rows; i++){
-    ellipse(getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500, 5, 5);
+    text(table.getRow(i).getInt("TEMP") + "°C on " +  table.getRow(i).getString("MON") + " " + 
+      table.getRow(i).getInt("DAYS"), getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 525);
     if(i != 0){
       line(getOffsetLon(table.getRow(i - 1).getFloat("LONT")),-(table.getRow(i - 1).getFloat("TEMP") * 5) + 500, getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500);
     }
