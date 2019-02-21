@@ -6,7 +6,7 @@ float getOffsetLon(float input){
 }
 
 float getOffsetLat(float input){
-  return ((input - 53.9)*100 + 100);
+  return -((input - 53.9)*100) + 400;
 }
 
 void setup(){
@@ -21,7 +21,7 @@ void setup(){
 
   // Setup text
   PFont f = createFont("Arial",16,true);  // True for Anti-aliasing
-  textFont(f, 20);  // Arg 2 is font size
+  textFont(f, 12);  // Arg 2 is font size
   textAlign(CENTER, CENTER);
 
   strokeCap(SQUARE);
@@ -54,5 +54,14 @@ void setup(){
     // ellipse(getOffsetLon(table.getRow(i).getFloat("LONC")), getOffsetLat(table.getRow(i).getFloat("LATC")), 10, 10);
     fill(0);
     text(table.getRow(i).getString("CITY"), getOffsetLon(table.getRow(i).getFloat("LONC")), getOffsetLat(table.getRow(i).getFloat("LATC")));  
+  }
+  
+  stroke(255,0,0);
+  fill(255,0,0);
+  for(int i = 0; i < temp_rows; i++){
+    ellipse(getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500, 5, 5);
+    if(i != 0){
+      line(getOffsetLon(table.getRow(i - 1).getFloat("LONT")),-(table.getRow(i - 1).getFloat("TEMP") * 5) + 500, getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500);
+    }
   }
 }
