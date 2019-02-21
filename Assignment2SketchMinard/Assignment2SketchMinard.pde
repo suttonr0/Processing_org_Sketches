@@ -69,24 +69,29 @@ void setup(){
   fill(0);
   
   // --- Temperature grid lines ---
+  // TODO: Move right most temp value (Oct 18) to the right axis
   // Horizontals
   for(int i = 0; i < 4; i++){
-  line(getOffsetLon(table.getRow(0).getFloat("LONT")), 500 + (i * 50), getOffsetLon(table.getRow(8).getFloat("LONT")),500 + (i * 50));
+    line(getOffsetLon(table.getRow(0).getFloat("LONT")), 500 + (i * 50), getOffsetLon(table.getRow(8).getFloat("LONT")),500 + (i * 50));
   }
   // Verticals
   line(getOffsetLon(table.getRow(0).getFloat("LONT")), 500, getOffsetLon(table.getRow(0).getFloat("LONT")),650);
   line(getOffsetLon(table.getRow(8).getFloat("LONT")), 500, getOffsetLon(table.getRow(8).getFloat("LONT")),650);
   // Temp Indicators
-
+  for(int i = 0; i < 7; i++){
+    line(getOffsetLon(table.getRow(0).getFloat("LONT")) - 5, 500 + (i * 25), getOffsetLon(table.getRow(0).getFloat("LONT")) + 5, 500 + (i * 25));
+    text(i * -5, getOffsetLon(table.getRow(0).getFloat("LONT")) + 15, 500 + (i * 25));
+  }
+  
+  strokeWeight(3);
   
   for(int i = 0; i < temp_rows; i++){
     text(table.getRow(i).getInt("TEMP") + "°C on " +  table.getRow(i).getString("MON") + " " + 
-      table.getRow(i).getInt("DAYS"), getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 525);
+      table.getRow(i).getInt("DAY"), getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 527);
     if(i != 0){
       line(getOffsetLon(table.getRow(i - 1).getFloat("LONT")),-(table.getRow(i - 1).getFloat("TEMP") * 5) + 500, getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 500);
     }
   }
   
   // Say in writeup: Using programatic approach instead of hardcoded lines.
-  
 }
