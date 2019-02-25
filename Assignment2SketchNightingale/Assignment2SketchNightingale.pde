@@ -1,12 +1,11 @@
-// All sections have same angle = 360/#sections
-// #sections = 12 for each month (can just visualize a subset for one year of data)
+import processing.svg.*;
 
 Table table;
 int num_rows;
 
 void setup(){
   // Window size
-  size(1600,1000);
+  size(1600,1000, SVG, "NightingaleOutput.svg");
   background(255);
   // Load data
   table = loadTable("nightingale-data-1.csv", "header");
@@ -19,8 +18,10 @@ void setup(){
   textAlign(CENTER, CENTER);
   // Title text
   fill(0);
-  text("Florence Nightingale's Rose Diagram", 500, 10);
-
+  text("Florence Nightingale's Rose Diagram", 500, 60);
+  
+  // All sections have same angle = 360/#sections
+  // #sections = 12 for each month (can just visualize a subset for one year of data)
   int num_of_sections = 12;
   
   for(int i = 0; i < num_of_sections; i++){
@@ -132,6 +133,8 @@ void setup(){
     text(table.getRow(i).getString("Month"), 500 + 350*cos(section_angle + PI/num_of_sections), 
       500 + 350*sin(section_angle + PI/num_of_sections)); 
   } 
+  println("Finished");
+  exit();
 }
 
 void drawDisease(int disease, float section_angle, int num_of_sections){

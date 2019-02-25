@@ -1,3 +1,4 @@
+import processing.svg.*;
 
 Table table;
 
@@ -11,8 +12,11 @@ float getOffsetLat(float input){
 
 void setup(){
   // Window size
-  size(1600,1000);
-  background(255);
+  size(1600, 1000, SVG, "MinardOutput.svg");
+  background(255); 
+}
+
+void draw(){
   // Load data
   table = loadTable("minard-data.csv", "header");
   int city_rows = 20;
@@ -95,4 +99,6 @@ void setup(){
     // Line for graph
     line(getOffsetLon(table.getRow(i - 1).getFloat("LONT")),-(table.getRow(i - 1).getFloat("TEMP") * 5) + 700, getOffsetLon(table.getRow(i).getFloat("LONT")),-(table.getRow(i).getFloat("TEMP") * 5) + 700);
   }
+  println("Finished");
+  exit();
 }
