@@ -45,7 +45,6 @@ void draw(){
   frameRate(20);
   
   // Legend
-  
   PFont font = createFont("Arial",16,true);  // True for Anti-aliasing
   textFont(font, 20);  // Arg 2 is font size
   fill(0);
